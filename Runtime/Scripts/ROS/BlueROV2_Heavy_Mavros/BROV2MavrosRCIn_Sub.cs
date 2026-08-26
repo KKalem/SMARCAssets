@@ -65,8 +65,11 @@ namespace Brov2.Mavros
                 props[i].SetRpm(MapRCToActuation(ROSMsg.channels[i], PropRcMin, PropRcMax, PropMaxRPM));
             }
             
-            // Assuming RC channel 9 maps to camera tilt
-            CameraTiltHinge.SetAngle(MapRCToActuation(ROSMsg.channels[CameraTiltChannel], CameraTiltRcMin, CameraTiltRcMax, CameraTiltHinge.AngleMax));
+            if(CameraTiltChannel >= 0)
+            {
+                // Assuming RC channel 9 maps to camera tilt
+                CameraTiltHinge.SetAngle(MapRCToActuation(ROSMsg.channels[CameraTiltChannel], CameraTiltRcMin, CameraTiltRcMax, CameraTiltHinge.AngleMax));
+            }
         }
     }
 }

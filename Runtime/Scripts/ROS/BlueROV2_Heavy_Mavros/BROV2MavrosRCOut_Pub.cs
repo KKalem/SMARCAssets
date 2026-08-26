@@ -9,10 +9,12 @@ namespace Brov2.Mavros
     {
 
         BROV2MavrosRCIn_Sub rcInSub;
+        public int numChannels = 8;
+        
         protected override void InitPublisher()
         {
             rcInSub = GetComponent<BROV2MavrosRCIn_Sub>();
-            ROSMsg.channels = new ushort[rcInSub.CameraTiltChannel + 1];
+            ROSMsg.channels = new ushort[numChannels];
         }
 
         protected override void UpdateMessage()
@@ -21,7 +23,10 @@ namespace Brov2.Mavros
             {
                 ROSMsg.channels[i] = (ushort)MapActuationToRC(rcInSub.props[i].rpm, rcInSub.PropRcMin, rcInSub.PropRcMax, rcInSub.PropMaxRPM);
             }
-            ROSMsg.channels[rcInSub.CameraTiltChannel] = (ushort)MapActuationToRC(rcInSub.CameraTiltHinge.angle, rcInSub.CameraTiltRcMin, rcInSub.CameraTiltRcMax, rcInSub.CameraTiltHinge.AngleMax);
+            if(rcInSub.CameraTiltChannel >= 0)
+            {
+                ROSMsg.channels[rcInSub.CameraTiltChannel] = (ushort)MapActuationToRC(rcInSub.CameraTiltHinge.angle, rcInSub.CameraTiltRcMin, rcInSub.CameraTiltRcMax, rcInSub.CameraTiltHinge.AngleMax);
+            }
         }
         
 
